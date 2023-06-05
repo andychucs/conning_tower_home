@@ -1,91 +1,110 @@
-import Image from 'next/image'
+"use client";
+import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from './page.module.css'
+import {useState} from "react";
+import { useTranslation, Trans } from 'react-i18next';
+import './i18n.js'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const { t, i18n } = useTranslation();
+  const [sites, setSites] = useState(
+      typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('favoriteSites')) || [] : []
+  );
+  const [showAddSite, setShowAddSite] = useState(false);
+  const [newSiteUrl, setNewSiteUrl] = useState('');
+  const [newSiteName, setNewSiteName] = useState('');
+
+  // Open site in new tab/window
+  const openSite = (url) => {
+    window.open(url, '_blank');
+  };
+
+  // Add site to favorite sites
+  const addSite = () => {
+    if (newSiteUrl.trim() === '') return;
+
+    // Create an anchor element to parse the URL
+    const parser = document.createElement('a');
+    parser.href = newSiteUrl;
+
+    // Extract site title and favicon URL
+    const siteTitle = parser.hostname;
+    const siteFaviconUrl = `${parser.protocol}//${parser.hostname}/favicon.ico`;
+
+    // Create site object
+    const newSite = {
+      url: newSiteUrl,
+      title: newSiteName==='' ? siteTitle : newSiteName,
+      faviconUrl: siteFaviconUrl,
+    };
+
+    // Update saved sites
+    const updatedSites = [...sites, newSite];
+    setSites(updatedSites);
+
+    // Save sites to local storage
+    localStorage.setItem('favoriteSites', JSON.stringify(updatedSites));
+
+    // Reset input values and hide popup
+    setNewSiteUrl('');
+    setNewSiteName('');
+    setShowAddSite(false);
+  };
+
+  const removeSite = (index) => {
+    const updatedSites = [...sites];
+    updatedSites.splice(index, 1);
+    setSites(updatedSites);
+    localStorage.setItem('favoriteSites', JSON.stringify(updatedSites));
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+      <>
+        <Head>
+          <title>Home</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </Head>
+        <main className={styles.main}>
+          <div className="favorite-websites">
+            <div className="site-container">
+              {sites.map((site, index) => (
+                  <div className="site" key={index}>
+                    <div onClick={() => openSite(site.url)}>
+                      <img src={site.faviconUrl} alt="Site Icon" />
+                    </div>
+                    <span onClick={() => openSite(site.url)}>{site.title}</span>
+                    <span className="site delete-icon" onClick={() => removeSite(index)}>
+                  &times;
+                </span>
+                  </div>
+              ))}
+              <div className="site add-site" onClick={() => setShowAddSite(true)}>
+                <span>+</span>
+              </div>
+            </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+            {showAddSite && (
+                <div className="add-site-popup">
+                  <input
+                      type="url"
+                      placeholder={t('enterURL')}
+                      value={newSiteUrl}
+                      onChange={(e) => setNewSiteUrl(e.target.value)}
+                  />
+                  <input
+                      type="text"
+                      placeholder={t('enterName')}
+                      value={newSiteName}
+                      onChange={(e) => setNewSiteName(e.target.value)}
+                  />
+                  <button onClick={addSite}>{t('addButton')}</button>
+                </div>
+            )}
+          </div>
+        </main>
+      </>
+  );
 }

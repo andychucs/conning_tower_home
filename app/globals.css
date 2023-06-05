@@ -1,4 +1,10 @@
 :root {
+  --input-color: #99a3ba;
+  --input-border: #cdd9ed;
+  --input-background: #fff;
+  --input-placeholder: #cbd1dc;
+  --input-border-focus: rgba(0, 122, 255, 1);
+
   --max-width: 1100px;
   --border-radius: 12px;
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
@@ -104,4 +110,127 @@ a {
   html {
     color-scheme: dark;
   }
+}
+.favorite-websites {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.site-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  max-width: 800px;
+}
+
+.site {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.site div {
+  width: 100%;
+}
+
+.site img {
+  width: 64px;
+  height: 64px;
+  display: block;
+  margin: 0 auto;
+}
+
+.site span {
+  color: black;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  width: 100%;
+  font-weight: bold;
+}
+
+.site.delete-icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: #888;
+  cursor: pointer;
+}
+
+.site.add-site {
+  justify-content: center;
+  background-color: #ddd;
+  color: #333;
+}
+
+.add-site-popup {
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.add-site-popup input {
+  width: 300px;
+  padding: 8px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 22px;
+  font-weight: 500;
+  border-radius: 20px 20px 20px 20px;
+  -webkit-appearance: none;
+  color: var(--input-color);
+  border: 1px solid var(--input-border);
+  background: var(--input-background);
+  transition: border 0.3s ease;
+}
+
+.add-site-popup input::placeholder {
+  color: var(--input-placeholder);
+}
+
+.add-site-popup input:focus {
+  outline: none;
+  border-color: var(--input-border-focus);
+}
+
+.add-site-popup button {
+  padding: 10px 20px;
+  font-size: 14px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 80px;
+  margin-left: -1px;
+  border-radius: 20px 20px 20px 20px;
+  background-color: #99a3ba;
+  color: #fff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-site-popup button:hover {
+  background-color: #5d6e90;
 }
