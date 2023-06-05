@@ -12,6 +12,7 @@ const resources = {
             enterURL: 'Enter website URL',
             enterName: 'Enter website name',
             addButton: 'Add',
+            cancelButton: 'Close'
         }
     },
     'zh-Hans': {
@@ -20,6 +21,7 @@ const resources = {
             enterURL: '输入网站URL',
             enterName: '输入网站名称',
             addButton: '新增',
+            cancelButton: '取消'
         }
     },
     'ja': {
@@ -28,6 +30,7 @@ const resources = {
             enterURL: 'ウェブサイトのURLを入力してください',
             enterName: 'ウェブサイトの名前を入力してください',
             addButton: '追加',
+            cancelButton: 'キャンセル'
         }
     },
     'zh-Hant': {
@@ -36,6 +39,7 @@ const resources = {
             enterURL: '輸入網站URL',
             enterName: '輸入網站名稱',
             addButton: '新增',
+            cancelButton: '取消'
         }
     }
 };

@@ -54,6 +54,12 @@ export default function Home() {
     setShowAddSite(false);
   };
 
+  const cancelAddSite = () =>{
+    setNewSiteUrl('');
+    setNewSiteName('');
+    setShowAddSite(false);
+  }
+
   const removeSite = (index) => {
     const updatedSites = [...sites];
     updatedSites.splice(index, 1);
@@ -100,7 +106,11 @@ export default function Home() {
                       value={newSiteName}
                       onChange={(e) => setNewSiteName(e.target.value)}
                   />
-                  <button onClick={addSite}>{t('addButton')}</button>
+                  <div>
+                    <button onClick={addSite}>{t('addButton')}</button>
+                    <button onClick={cancelAddSite}>{t('cancelButton')}</button>
+                  </div>
+
                 </div>
             )}
           </div>
